@@ -74,10 +74,10 @@ public class AppTest
      */
     public void testEx2()
     {
-        String expectedResult = "Ford Focus - CDMR - Compact - 5 Doors - Manual - Petrol - AC\n" +
+        String expectedResult = "Ford Focus - CDMR - Compact - 5 doors - Manual - Petrol - AC\n" +
                                 "Ford Galaxy - FVAR - Full size - Passenger Van - Automatic - Petrol - AC\n" +
                                 "VW Passat Estate - IWMR - Intermediate - Estate - Manual - Petrol - AC\n" +
-                                "Ford Focus - CDMR - Compact - 5 Doors - Manual - Petrol - AC\n" +
+                                "Ford Focus - CDMR - Compact - 5 doors - Manual - Petrol - AC\n" +
                                 "Kia Picanto - MBMN - Mini - 2 doors - Manual - Petrol - no AC\n";
         
         ByteArrayOutputStream consoleLogs = new ByteArrayOutputStream();
@@ -107,7 +107,7 @@ public class AppTest
         System.setOut(new PrintStream(consoleLogs));
 
         VehicleJSONHandler app = new VehicleJSONHandler("testSet.json");
-        app.printSpec();
+        app.printHighestRated();
         
         assertTrue( consoleLogs.toString().equals(expectedResult) ); 
 

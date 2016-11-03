@@ -61,21 +61,22 @@ class VehicleJSONHandler {
 	}
 	
 	/* TODO Print a list of all the cars, in ascending price order */
-	@SuppressWarnings("unused")
 	public void printAscending() {
 
 		/* Compare the vehicles based on price.
 		 * We don't add this as a comparison method of the class as we will want
 		 * to compare on different parameters later on.
 		 */
-		Collections.sort(vehicleList, new Comparator<Vehicle>() {
+		ArrayList<Vehicle> sortedList = (ArrayList<Vehicle>)vehicleList.clone();
+
+		Collections.sort(sortedList, new Comparator<Vehicle>() {
 			@Override 
 			public int compare(Vehicle o1, Vehicle o2) {
 				return Double.compare(o1.price, o2.price);
 			}
 		});
 
-		for (Vehicle vehicle : vehicleList) {
+		for (Vehicle vehicle : sortedList) {
 			System.out.println(vehicle.name + " - " + vehicle.price);
 		}	
 
@@ -86,6 +87,53 @@ class VehicleJSONHandler {
 	 * vehicles based on their SIPP. Print the specification */
 	@SuppressWarnings("unused")
 	public void printSpec() {
+		/* Define the hashmaps for the SIPP comparison procedure */
+		HashMap<String, String> carTypeMap = new HashMap<String, String>() {{
+			put("M", "Mini");
+			put("E", "Economy");
+			put("C", "Compact");
+			put("I", "Intermediate");
+			put("S", "Standard");
+			put("F", "Full size");
+			put("P", "Premium");
+			put("L", "Luxury");
+			put("X", "Special");
+		}};
+
+		HashMap<String, String> doorsMap = new HashMap<String, String>() {{
+			put("B", "2 doors");
+			put("C", "4 doors");
+			put("D", "5 doors");
+			put("W", "Estate");
+			put("T", "Convertible");
+			put("F", "SUV");
+			put("P", "Pick up");
+			put("V", "Passenger Van");
+		}};
+
+		HashMap<String, String> transmissionMap = new HashMap<String, String>() {{
+			put("M", "Manual");
+			put("A", "Automatic");
+		}};
+
+		HashMap<String,String> fuelAirMap = new HashMap<String, String>() {{
+			put("N", "Petrol/no AC");
+			put("R", "Petrol/AC");
+		}};
+
+		/* Loop through the vehicles and print their specification */
+		for (Vehicle vehicle : vehicleList) {
+			System.out.print(vehicle.name + " - " + vehicle.sipp + " - ");
+			String[] sippArray = vehicle.sipp.split("");
+
+			System.out.print(carTypeMap.get(sippArray[1]) + " - ");
+			System.out.print(doorsMap.get(sippArray[2]) + " - ");
+			System.out.print(transmissionMap.get(sippArray[3]) + " - ");
+
+			String[] fuelAir = fuelAirMap.get(sippArray[4]).split("/");
+			System.out.println(fuelAir[0] + " - " + fuelAir[1]);
+		}
+
 		return;
 	}
 	
@@ -116,7 +164,10 @@ public class App  {
 		// Initialise JSON task handler
 		VehicleJSONHandler handler = new VehicleJSONHandler(args[0]);
 
+		System.out.println("EXERCISE 1");
 		handler.printAscending();
+		System.out.println("\n\nEXERCISE 2");
+		handler.printSpec();
 		
 		return;
 	}
