@@ -52,7 +52,7 @@ public class AppTest
     {
         String expectedResult = "Kia Picanto - 136.57\n" + 
                                 "Ford Focus - 157.85\n" +
-                                "Kia Ceed Estate - 311.03\n" +
+                                "Ford Focus - 157.85\n" +
                                 "VW Passat Estate - 469.37\n" +
                                 "Ford Galaxy - 706.89\n";
 
@@ -74,8 +74,23 @@ public class AppTest
      */
     public void testEx2()
     {
-        assertTrue( true );
+        String expectedResult = "Ford Focus - CDMR - Compact - 5 Doors - Manual - Petrol - AC\n" +
+                                "Ford Galaxy - FVAR - Full size - Passenger Van - Automatic - Petrol - AC\n" +
+                                "VW Passat Estate - IWMR - Intermediate - Estate - Manual - Petrol - AC\n" +
+                                "Ford Focus - CDMR - Compact - 5 Doors - Manual - Petrol - AC\n" +
+                                "Kia Picanto - MBMN - Mini - 2 doors - Manual - Petrol - no AC\n";
+        
+        ByteArrayOutputStream consoleLogs = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(consoleLogs));
+
+        VehicleJSONHandler app = new VehicleJSONHandler("testSet.json");
+        app.printSpec();
+        
+        assertTrue( consoleLogs.toString().equals(expectedResult) ); 
+
+        System.setOut(null);
     }
+
 
     /**
      * Ex3 Print out the highest rated supplier per car type, 
@@ -83,7 +98,20 @@ public class AppTest
      */
     public void testEx3()
     {
-        assertTrue( true );
+        String expectedResult = "Ford Focus - Compact - Hertz - 8.9\n" +
+                                "Ford Galaxy - Full size - Hertz - 8.9\n" +
+                                "VW Passat Estate - Intermediate - Hertz - 8.9\n" +
+                                "Kia Picanto - Mini - Hertz - 8.9\n";
+        
+        ByteArrayOutputStream consoleLogs = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(consoleLogs));
+
+        VehicleJSONHandler app = new VehicleJSONHandler("testSet.json");
+        app.printSpec();
+        
+        assertTrue( consoleLogs.toString().equals(expectedResult) ); 
+
+        System.setOut(null);
     }
 
     /**
@@ -93,6 +121,20 @@ public class AppTest
      */
     public void testEx4()
     {
-        assertTrue( true );
+        String expectedResult = "Ford Galaxy - 7 - 8.9 - 15.9\n" +
+                                "Ford Focus - 3 - 8.9 - 11.9\n" +
+                                "VW Passat Estate - 3 - 8.9 - 11.9\n" +
+                                "Ford Focus - 3 - 7.8 - 10.8\n" +
+                                "Kia Picanto - 1 - 8.9 - 9.9\n";
+
+        ByteArrayOutputStream consoleLogs = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(consoleLogs));
+
+        VehicleJSONHandler app = new VehicleJSONHandler("testSet.json");
+        app.printHighestScoring();
+        
+        assertTrue( consoleLogs.toString().equals(expectedResult) ); 
+
+        System.setOut(null);
     }
 }
