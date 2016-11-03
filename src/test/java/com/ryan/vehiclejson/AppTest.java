@@ -12,14 +12,12 @@ import java.io.*;
 public class AppTest 
     extends TestCase
 {
-    private ByteArrayOutputStream consoleLogs = new ByteArrayOutputStream();
-
     public void setUpStreams() {
-       System.setOut(new PrintStream(consoleLogs));
+       
     }
 
     public void cleanUpStreams() {
-       System.setOut(null);
+       
     }
 
     /**
@@ -52,15 +50,22 @@ public class AppTest
      */
     public void testEx1()
     {
-        setUpStreams();
-        VehicleJSONHandler app = new VehicleJSONHandler("./testSet.json");
-        app.printAscending();
+        String expectedResult = "Kia Picanto - 136.57\n" + 
+                                "Ford Focus - 157.85\n" +
+                                "Kia Ceed Estate - 311.03\n" +
+                                "VW Passat Estate - 469.37\n" +
+                                "Ford Galaxy - 706.89\n";
 
-        cleanUpStreams();
-        assertTrue( consoleLogs.toString() == "Ford Focus - 157.85\n" +
-                                              "Kia Ceed Estate - 311.03\n" +
-                                              "VW Passat Estate - 469.37\n" +
-                                              "Ford Galaxy - 706.89" );
+        ByteArrayOutputStream consoleLogs = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(consoleLogs));
+
+        VehicleJSONHandler app = new VehicleJSONHandler("testSet.json");
+        app.printAscending();
+        
+        
+        assertTrue( consoleLogs.toString().equals(expectedResult) ); 
+
+        System.setOut(null);
     }
 
     /**

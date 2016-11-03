@@ -4,57 +4,95 @@ import java.io.FileReader;
 import java.io.*;
 import java.util.*;
 
+//import com.google.gson.Gson;
 import com.google.gson.Gson;
-import com.ryan.vehiclejson.VehicleJSONHandler;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.annotations.SerializedName;
+
+class Response {
+	@SerializedName("Search")
+	public Search search;
+}
+
+class Search {
+	@SerializedName("VehicleList")
+	public ArrayList<Vehicle> vehicleList;
+}
 
 class Vehicle {
 	// From JSON file
-	String sipp;
-	String name;
-	double price;
-	String supplier;
-	double rating;
-
-	// To be calculated
-	String specification;
-	int score;
+	public String sipp;
+	public String name;
+	public double price;
+	public String supplier;
+	public double rating;
 }
 
 class VehicleJSONHandler {
-	// JSON File to read
+	// GSON class
+	Gson gson;
+	// JSON File and contents to read
 	String jsonFilename;
-
+	String jsonContents;
 	// Array list of vehicles from JSON
-	ArrayList vehicleList = new ArrayList<Vehicle>();
+	ArrayList<Vehicle> vehicleList;
 
 	// Constructor
-	public VehicleJSONHandler(String jsonFile) {
-		jsonFilename = jsonFile;
+	public VehicleJSONHandler(String jsonFilenameVar) {
+		// Initialise GSON class
+		gson = new Gson();
+		jsonFilename = jsonFilenameVar;
+		readJSONFile();
 	}
 
-	/* Import the vehicles.json file into a JSON Object to be transformed into an 
+	/* Import the vehicles.json file into a string to be transformed into an 
 	 * ArrayList */
-	public static void readJSONFile() {
-		return;
+	public void readJSONFile() {
+		try {
+			FileReader jsonFile =  new FileReader(jsonFilename);
+			Response response = gson.fromJson(jsonFile, Response.class);
+			vehicleList = response.search.vehicleList;
+			return;		
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 	
 	/* TODO Print a list of all the cars, in ascending price order */
 	@SuppressWarnings("unused")
-	public static void printAscending() {
+	public void printAscending() {
+
+		/* Compare the vehicles based on price.
+		 * We don't add this as a comparison method of the class as we will want
+		 * to compare on different parameters later on.
+		 */
+		Collections.sort(vehicleList, new Comparator<Vehicle>() {
+			@Override 
+			public int compare(Vehicle o1, Vehicle o2) {
+				return Double.compare(o1.price, o2.price);
+			}
+		});
+
+		for (Vehicle vehicle : vehicleList) {
+			System.out.println(vehicle.name + " - " + vehicle.price);
+		}	
+
 		return;
 	}
 	
 	/* TODO Using the table below, calculate the specification of the 
 	 * vehicles based on their SIPP. Print the specification */
 	@SuppressWarnings("unused")
-	public static void printSpec() {
+	public void printSpec() {
 		return;
 	}
 	
 	/* TODO Print out the highest rated supplier per car type, 
 	 * descending order */
 	@SuppressWarnings("unused")
-	public static void printHighestRated() {
+	public void printHighestRated() {
 		return;
 	}
 	
@@ -68,20 +106,17 @@ class VehicleJSONHandler {
 	 * Air conditioned – 2 points
 	 */
 	@SuppressWarnings("unused")
-	public static void printHighestScoring() {
+	public void printHighestScoring() {
 		return;
 	}
 }
 
 public class App  {
 	public static void main(String[] args) {
-		System.out.println("Test!");
-
-		// Initialise gson class
-		Gson gson = new Gson();
-
 		// Initialise JSON task handler
-		VehicleJSONHandler handler = new VehicleJSONHandler("./vehicles.json");
+		VehicleJSONHandler handler = new VehicleJSONHandler(args[0]);
+
+		handler.printAscending();
 		
 		return;
 	}

@@ -28,6 +28,13 @@
                 "price": 311.03,
                 "supplier": "Hertz",
                 "rating": 8.9
+            },
+            {
+                "sipp": "MBMN",
+                "name": "Kia Picanto",
+                "price": 136.57,
+                "supplier": "Hertz",
+                "rating": 8.9
             }
         ]
     }
