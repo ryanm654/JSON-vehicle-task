@@ -26,65 +26,17 @@ class Vehicle {
 	public double price;
 	public String supplier;
 	public double rating;
-}
 
-class VehicleJSONHandler {
-	// GSON class
-	Gson gson;
-	// JSON File and contents to read
-	String jsonFilename;
-	String jsonContents;
-	// Array list of vehicles from JSON
-	ArrayList<Vehicle> vehicleList;
+	public transient String carType;
+	public transient String doorType;
+	public transient String transmission;
+	public transient String fuel;
+	public transient String air;
 
-	// Constructor
-	public VehicleJSONHandler(String jsonFilenameVar) {
-		// Initialise GSON class
-		gson = new Gson();
-		jsonFilename = jsonFilenameVar;
-		readJSONFile();
-	}
+	public transient double score = 0;
+	public transient double scoreAddRating;
 
-	/* Import the vehicles.json file into a into an ArrayList */
-	public void readJSONFile() {
-		try {
-			FileReader jsonFile =  new FileReader(jsonFilename);
-			Response response = gson.fromJson(jsonFile, Response.class);
-			vehicleList = response.search.vehicleList;
-			return;
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	/* Ex1 Print a list of all the cars, in ascending price order */
-	public void printAscending() {
-
-		/* Compare the vehicles based on price.
-		 * We don't add this as a comparison method of the class as we will want
-		 * to compare on different parameters later on.
-		 */
-		ArrayList<Vehicle> sortedList = (ArrayList<Vehicle>)vehicleList.clone();
-
-		Collections.sort(sortedList, new Comparator<Vehicle>() {
-			@Override
-			public int compare(Vehicle o1, Vehicle o2) {
-				return Double.compare(o1.price, o2.price);
-			}
-		});
-
-		for (Vehicle vehicle : sortedList) {
-			System.out.println(vehicle.name + " - " + vehicle.price);
-		}
-
-		return;
-	}
-
-	/* Ex2 Using the table below, calculate the specification of the
-	 * vehicles based on their SIPP. Print the specification */
-	public void printSpec() {
+	public void calculateSIPP() {
 		/* Define the hashmaps for the SIPP comparison procedure */
 		HashMap<String, String> carTypeMap = new HashMap<String, String>() {{
 			put("M", "Mini");
@@ -120,20 +72,94 @@ class VehicleJSONHandler {
 			put("R", "Petrol/AC");
 		}};
 
+		String[] sippArray = this.sipp.split("");
+		this.carType = carTypeMap.get(sippArray[1]);
+		this.doorType = doorsMap.get(sippArray[2]);
+		this.transmission = transmissionMap.get(sippArray[3]);
+		String[] fuelAir = fuelAirMap.get(sippArray[4]).split("/");
+		this.fuel = fuelAir[0];
+		this.air = fuelAir[1];
+		return;
+	}
+
+	public void calculateScore() {
+		if (this.transmission.equals("Manual")) { this.score += 1; }
+		// Use an else if instead of an else in case more transmissions are added
+		else if (this.transmission.equals("Automatic")) { this.score += 5; }
+
+		if (this.air.equals("AC")) { this.score += 2; }
+
+		this.scoreAddRating = score + rating;
+		return;
+	}
+}
+
+class VehicleJSONHandler {
+	// GSON class
+	Gson gson;
+	// JSON File and contents to read
+	String jsonFilename;
+	String jsonContents;
+	// Array list of vehicles from JSON
+	ArrayList<Vehicle> vehicleList;
+
+	// Constructor
+	public VehicleJSONHandler(String jsonFilenameVar) {
+		// Initialise GSON class
+		gson = new Gson();
+		jsonFilename = jsonFilenameVar;
+		readJSONFile();
+		for (Vehicle vehicle : vehicleList) {
+			vehicle.calculateSIPP();
+			vehicle.calculateScore();
+		}
+	}
+
+	/* Import the vehicles.json file into a into an ArrayList */
+	public void readJSONFile() {
+		try {
+			FileReader jsonFile =  new FileReader(jsonFilename);
+			Response response = gson.fromJson(jsonFile, Response.class);
+			vehicleList = response.search.vehicleList;
+			return;
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/* Ex1 Print a list of all the cars, in ascending price order */
+	public void printAscending() {
+
+		/* Compare the vehicles based on price.
+		 * We don't add this as a comparison method of the class as we will want
+		 * to compare on different parameters later on.
+		 */
+		ArrayList<Vehicle> sortedList = (ArrayList<Vehicle>)vehicleList.clone();
+
+		Collections.sort(sortedList, new Comparator<Vehicle>() {
+			@Override
+			public int compare(Vehicle o1, Vehicle o2) {
+				return Double.compare(o1.price, o2.price);
+			}
+		});
+
+		for (Vehicle vehicle : sortedList) {
+			System.out.println(vehicle.name + " - " + vehicle.price);
+		}
+
+		return;
+	}
+
+	/* Ex2 Using the table below, calculate the specification of the
+	 * vehicles based on their SIPP. Print the specification */
+	public void printSpec() {
 		/* Loop through the vehicles and print their specification */
 		for (Vehicle vehicle : vehicleList) {
-			System.out.print(vehicle.name + " - " + vehicle.sipp + " - ");
-			/* Split the SIPP into an array of letters, each to be hashed */
-			String[] sippArray = vehicle.sipp.split("");
-
-			/* Start from index 1 due to a side effect of splitting on "" */
-			System.out.print(carTypeMap.get(sippArray[1]) + " - ");
-			System.out.print(doorsMap.get(sippArray[2]) + " - ");
-			System.out.print(transmissionMap.get(sippArray[3]) + " - ");
-
-			/* Split fuel and air con details into two segements before printing */
-			String[] fuelAir = fuelAirMap.get(sippArray[4]).split("/");
-			System.out.println(fuelAir[0] + " - " + fuelAir[1]);
+			System.out.println(vehicle.name + " - " + vehicle.sipp + " - " +
+											 vehicle.carType + " - " + vehicle.doorType  + " - " +
+											 vehicle.transmission + " - " + vehicle.fuel  + " - " +
+											 vehicle.air);
 		}
 		return;
 	}
@@ -156,6 +182,19 @@ class VehicleJSONHandler {
 	 */
 	@SuppressWarnings("unused")
 	public void printHighestScoring() {
+		ArrayList<Vehicle> sortedList = (ArrayList<Vehicle>)vehicleList.clone();
+
+		Collections.sort(sortedList, new Comparator<Vehicle>() {
+			@Override
+			public int compare(Vehicle o1, Vehicle o2) {
+				return Double.compare(o2.scoreAddRating, o1.scoreAddRating);
+			}
+		});
+
+		for (Vehicle vehicle : sortedList) {
+			System.out.println(vehicle.name + " - " + (int) vehicle.score + " - " + 
+											   vehicle.rating + " - " + vehicle.scoreAddRating);
+		}
 		return;
 	}
 }
@@ -169,6 +208,9 @@ public class App  {
 		handler.printAscending();
 		System.out.println("\n\nEXERCISE 2");
 		handler.printSpec();
+
+		System.out.println("\n\nEXERCISE 4");
+		handler.printHighestScoring();
 
 		return;
 	}
