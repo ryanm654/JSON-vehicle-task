@@ -166,8 +166,47 @@ class VehicleJSONHandler {
 
 	/* TODO Print out the highest rated supplier per car type,
 	 * descending order */
-	@SuppressWarnings("unused")
 	public void printHighestRated() {
+		ArrayList<Vehicle> highestRatedList = new ArrayList<Vehicle>();
+		HashMap<String, Vehicle> currentHighestRated 
+															= new HashMap<String, Vehicle>();
+
+		/* Loop through each vehicle, adding the highest rated supplier of each
+		   type to the array list for printing later, and the hashmap for comparison
+		   with other vehicles of the same type */
+		for (Vehicle vehicle : vehicleList) {
+			Vehicle currentBest = currentHighestRated.get(vehicle.carType);
+			
+			if (currentBest == null) {
+				// Add new vehicle if one does not currently exist
+				currentHighestRated.put(vehicle.carType, vehicle);
+				highestRatedList.add(vehicle);
+			}
+			else if (currentBest.rating < vehicle.rating) {
+				// Remove current highest rated supplier of car type from arraylist
+				highestRatedList.remove(currentBest);
+
+				// Add new vehicle
+				currentHighestRated.put(vehicle.carType, vehicle);
+				highestRatedList.add(vehicle);
+			}
+		}
+
+		/* Once this process is complete we must sort the new array list by 
+		   rating, descending order */
+		Collections.sort(highestRatedList, new Comparator<Vehicle>() {
+			@Override
+			public int compare(Vehicle o1, Vehicle o2) {
+				return Double.compare(o2.rating, o1.rating);
+			}
+		});
+
+		/* Finally, print them out */
+		for (Vehicle vehicle : highestRatedList) {
+			System.out.println(vehicle.name + " - " + vehicle.carType + " - " + 
+												 vehicle.supplier + " - " + vehicle.rating);
+		}
+
 		return;
 	}
 
@@ -180,7 +219,6 @@ class VehicleJSONHandler {
 	 * Automatic transmission – 5 points
 	 * Air conditioned – 2 points
 	 */
-	@SuppressWarnings("unused")
 	public void printHighestScoring() {
 		ArrayList<Vehicle> sortedList = (ArrayList<Vehicle>)vehicleList.clone();
 
@@ -204,12 +242,13 @@ public class App  {
 		// Initialise JSON task handler
 		VehicleJSONHandler handler = new VehicleJSONHandler(args[0]);
 
-		System.out.println("EXERCISE 1");
+		System.out.println("-----------------\nEXERCISE 1\n-----------------");
 		handler.printAscending();
-		System.out.println("\n\nEXERCISE 2");
+		System.out.println("\n-----------------\nEXERCISE 2\n-----------------");
 		handler.printSpec();
-
-		System.out.println("\n\nEXERCISE 4");
+		System.out.println("\n-----------------\nEXERCISE 3\n-----------------");
+		handler.printHighestRated();
+		System.out.println("\n-----------------\nEXERCISE 4\n-----------------");
 		handler.printHighestScoring();
 
 		return;
