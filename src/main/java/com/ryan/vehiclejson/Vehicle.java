@@ -91,11 +91,11 @@ class Vehicle {
 			put("R", "Petrol/AC");
 		}};
 
-		String[] sippArray = this.sipp.split("");
-		this.carType = carTypeMap.get(sippArray[0]);
-		this.doorType = doorsMap.get(sippArray[1]);
-		this.transmission = transmissionMap.get(sippArray[2]);
-		String[] fuelAir = fuelAirMap.get(sippArray[3]).split("/");
+		//String[] sippArray = this.sipp.split("");
+		this.carType = carTypeMap.get(String.valueOf(this.sipp.charAt(0)));
+		this.doorType = doorsMap.get(String.valueOf(this.sipp.charAt(1)));
+		this.transmission = transmissionMap.get(String.valueOf(this.sipp.charAt(2)));
+		String[] fuelAir = fuelAirMap.get(String.valueOf(this.sipp.charAt(3))).split("/");
 		this.fuel = fuelAir[0];
 		this.air = fuelAir[1];
 		return;
