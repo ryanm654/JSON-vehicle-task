@@ -14,7 +14,7 @@
 
 package com.ryan.vehiclejson;
 
-import java.util.HashMap;
+import java.util.TreeMap;
 
 class Vehicle {
 	// From JSON file
@@ -47,7 +47,7 @@ class Vehicle {
 	public String getTransmission() { return this.transmission; }
 	public String getFuel() { return this.fuel; }
 	public String getAir() { return this.air; }
-	
+
 	/* Setters */
 	public void setSipp(String newSIPP) { this.sipp = newSIPP; return; }
 	public void setName(String newName) { this.name = newName; return; }
@@ -57,7 +57,7 @@ class Vehicle {
 
 	public void calculateSIPP() {
 		/* Define the hashmaps for the SIPP comparison procedure */
-		HashMap<String, String> carTypeMap = new HashMap<String, String>() {{
+		TreeMap<String, String> carTypeMap = new TreeMap<String, String>() {{
 			put("M", "Mini");
 			put("E", "Economy");
 			put("C", "Compact");
@@ -69,7 +69,7 @@ class Vehicle {
 			put("X", "Special");
 		}};
 
-		HashMap<String, String> doorsMap = new HashMap<String, String>() {{
+		TreeMap<String, String> doorsMap = new TreeMap<String, String>() {{
 			put("B", "2 doors");
 			put("C", "4 doors");
 			put("D", "5 doors");
@@ -81,21 +81,21 @@ class Vehicle {
 			put("X", "Special");
 		}};
 
-		HashMap<String, String> transmissionMap = new HashMap<String, String>() {{
+		TreeMap<String, String> transmissionMap = new TreeMap<String, String>() {{
 			put("M", "Manual");
 			put("A", "Automatic");
 		}};
 
-		HashMap<String,String> fuelAirMap = new HashMap<String, String>() {{
+		TreeMap<String,String> fuelAirMap = new TreeMap<String, String>() {{
 			put("N", "Petrol/no AC");
 			put("R", "Petrol/AC");
 		}};
 
 		String[] sippArray = this.sipp.split("");
-		this.carType = carTypeMap.get(sippArray[1]);
-		this.doorType = doorsMap.get(sippArray[2]);
-		this.transmission = transmissionMap.get(sippArray[3]);
-		String[] fuelAir = fuelAirMap.get(sippArray[4]).split("/");
+		this.carType = carTypeMap.get(sippArray[0]);
+		this.doorType = doorsMap.get(sippArray[1]);
+		this.transmission = transmissionMap.get(sippArray[2]);
+		String[] fuelAir = fuelAirMap.get(sippArray[3]).split("/");
 		this.fuel = fuelAir[0];
 		this.air = fuelAir[1];
 		return;
