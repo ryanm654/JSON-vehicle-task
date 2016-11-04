@@ -45,22 +45,21 @@ class VehicleJSONHandler {
 		readJSONFile();
 	}
 
-	/* Import the vehicles.json file into a string to be transformed into an 
-	 * ArrayList */
+	/* Import the vehicles.json file into a into an ArrayList */
 	public void readJSONFile() {
 		try {
 			FileReader jsonFile =  new FileReader(jsonFilename);
 			Response response = gson.fromJson(jsonFile, Response.class);
 			vehicleList = response.search.vehicleList;
-			return;		
+			return;
 		}
 		catch (IOException e) {
 			e.printStackTrace();
 		}
 
 	}
-	
-	/* TODO Print a list of all the cars, in ascending price order */
+
+	/* Ex1 Print a list of all the cars, in ascending price order */
 	public void printAscending() {
 
 		/* Compare the vehicles based on price.
@@ -70,7 +69,7 @@ class VehicleJSONHandler {
 		ArrayList<Vehicle> sortedList = (ArrayList<Vehicle>)vehicleList.clone();
 
 		Collections.sort(sortedList, new Comparator<Vehicle>() {
-			@Override 
+			@Override
 			public int compare(Vehicle o1, Vehicle o2) {
 				return Double.compare(o1.price, o2.price);
 			}
@@ -78,14 +77,13 @@ class VehicleJSONHandler {
 
 		for (Vehicle vehicle : sortedList) {
 			System.out.println(vehicle.name + " - " + vehicle.price);
-		}	
+		}
 
 		return;
 	}
-	
-	/* TODO Using the table below, calculate the specification of the 
+
+	/* Ex2 Using the table below, calculate the specification of the
 	 * vehicles based on their SIPP. Print the specification */
-	@SuppressWarnings("unused")
 	public void printSpec() {
 		/* Define the hashmaps for the SIPP comparison procedure */
 		HashMap<String, String> carTypeMap = new HashMap<String, String>() {{
@@ -109,6 +107,7 @@ class VehicleJSONHandler {
 			put("F", "SUV");
 			put("P", "Pick up");
 			put("V", "Passenger Van");
+			put("X", "Special");
 		}};
 
 		HashMap<String, String> transmissionMap = new HashMap<String, String>() {{
@@ -124,30 +123,32 @@ class VehicleJSONHandler {
 		/* Loop through the vehicles and print their specification */
 		for (Vehicle vehicle : vehicleList) {
 			System.out.print(vehicle.name + " - " + vehicle.sipp + " - ");
+			/* Split the SIPP into an array of letters, each to be hashed */
 			String[] sippArray = vehicle.sipp.split("");
 
+			/* Start from index 1 due to a side effect of splitting on "" */
 			System.out.print(carTypeMap.get(sippArray[1]) + " - ");
 			System.out.print(doorsMap.get(sippArray[2]) + " - ");
 			System.out.print(transmissionMap.get(sippArray[3]) + " - ");
 
+			/* Split fuel and air con details into two segements before printing */
 			String[] fuelAir = fuelAirMap.get(sippArray[4]).split("/");
 			System.out.println(fuelAir[0] + " - " + fuelAir[1]);
 		}
-
 		return;
 	}
-	
-	/* TODO Print out the highest rated supplier per car type, 
+
+	/* TODO Print out the highest rated supplier per car type,
 	 * descending order */
 	@SuppressWarnings("unused")
 	public void printHighestRated() {
 		return;
 	}
-	
-	/* TODO Give each vehicle a score based on the below breakdown, 
-	 * then combine this score with the suppliers rating. Print out a 
+
+	/* TODO Give each vehicle a score based on the below breakdown,
+	 * then combine this score with the suppliers rating. Print out a
 	 * list of vehicles, ordered by the sum of the scores in descending order
-	 * 
+	 *
 	 * Breakdown:
 	 * Manual transmission – 1 point
 	 * Automatic transmission – 5 points
@@ -168,7 +169,7 @@ public class App  {
 		handler.printAscending();
 		System.out.println("\n\nEXERCISE 2");
 		handler.printSpec();
-		
+
 		return;
 	}
 }
