@@ -17,5 +17,8 @@ import com.google.gson.annotations.SerializedName;
 
 class Search {
 	@SerializedName("VehicleList")
-	public ArrayList<Vehicle> vehicleList;
+	private ArrayList<Vehicle> vehicleList;
+
+	/* Getters */
+	public ArrayList<Vehicle> getVehicleList() { return this.vehicleList; }
 }

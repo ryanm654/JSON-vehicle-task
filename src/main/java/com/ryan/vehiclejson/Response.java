@@ -16,5 +16,8 @@ import com.google.gson.annotations.SerializedName;
 
 class Response {
 	@SerializedName("Search")
-	public Search search;
+	private Search search;
+
+	/* Getters */
+	public Search getSearch() { return this.search; }
 }

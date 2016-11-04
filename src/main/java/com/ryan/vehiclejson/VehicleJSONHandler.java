@@ -47,7 +47,7 @@ class VehicleJSONHandler {
 		try {
 			FileReader jsonFile =  new FileReader(jsonFilename);
 			Response response = gson.fromJson(jsonFile, Response.class);
-			vehicleList = response.search.vehicleList;
+			vehicleList = response.getSearch().getVehicleList();
 			return;
 		}
 		catch (IOException e) {
@@ -67,12 +67,12 @@ class VehicleJSONHandler {
 		Collections.sort(sortedList, new Comparator<Vehicle>() {
 			@Override
 			public int compare(Vehicle o1, Vehicle o2) {
-				return Double.compare(o1.price, o2.price);
+				return Double.compare(o1.getPrice(), o2.getPrice());
 			}
 		});
 
 		for (Vehicle vehicle : sortedList) {
-			System.out.println(vehicle.name + " - " + vehicle.price);
+			System.out.println(vehicle.getName() + " - " + vehicle.getPrice());
 		}
 
 		return;
@@ -83,10 +83,10 @@ class VehicleJSONHandler {
 	public void printSpec() {
 		/* Loop through the vehicles and print their specification */
 		for (Vehicle vehicle : vehicleList) {
-			System.out.println(vehicle.name + " - " + vehicle.sipp + " - " +
-											 vehicle.carType + " - " + vehicle.doorType  + " - " +
-											 vehicle.transmission + " - " + vehicle.fuel  + " - " +
-											 vehicle.air);
+			System.out.println(vehicle.getName() + " - " + vehicle.getSipp() + " - " +
+											 vehicle.getCarType() + " - " + vehicle.getDoorType()  + " - " +
+											 vehicle.getTransmission() + " - " + vehicle.getFuel()  + " - " +
+											 vehicle.getAir());
 		}
 		return;
 	}
@@ -102,19 +102,19 @@ class VehicleJSONHandler {
 		   type to the array list for printing later, and the hashmap for comparison
 		   with other vehicles of the same type */
 		for (Vehicle vehicle : vehicleList) {
-			Vehicle currentBest = currentHighestRated.get(vehicle.carType);
+			Vehicle currentBest = currentHighestRated.get(vehicle.getCarType());
 			
 			if (currentBest == null) {
 				// Add new vehicle if one does not currently exist
-				currentHighestRated.put(vehicle.carType, vehicle);
+				currentHighestRated.put(vehicle.getCarType(), vehicle);
 				highestRatedList.add(vehicle);
 			}
-			else if (currentBest.rating < vehicle.rating) {
+			else if (currentBest.getRating() < vehicle.getRating()) {
 				// Remove current highest rated supplier of car type from arraylist
 				highestRatedList.remove(currentBest);
 
 				// Add new vehicle
-				currentHighestRated.put(vehicle.carType, vehicle);
+				currentHighestRated.put(vehicle.getCarType(), vehicle);
 				highestRatedList.add(vehicle);
 			}
 		}
@@ -124,14 +124,14 @@ class VehicleJSONHandler {
 		Collections.sort(highestRatedList, new Comparator<Vehicle>() {
 			@Override
 			public int compare(Vehicle o1, Vehicle o2) {
-				return Double.compare(o2.rating, o1.rating);
+				return Double.compare(o2.getRating(), o1.getRating());
 			}
 		});
 
 		/* Finally, print them out */
 		for (Vehicle vehicle : highestRatedList) {
-			System.out.println(vehicle.name + " - " + vehicle.carType + " - " + 
-												 vehicle.supplier + " - " + vehicle.rating);
+			System.out.println(vehicle.getName() + " - " + vehicle.getCarType() + " - " + 
+												 vehicle.getSupplier() + " - " + vehicle.getRating());
 		}
 
 		return;
@@ -157,8 +157,8 @@ class VehicleJSONHandler {
 		});
 
 		for (Vehicle vehicle : sortedList) {
-			System.out.println(vehicle.name + " - " + (int) vehicle.score + " - " + 
-											   vehicle.rating + " - " + vehicle.scoreAddRating);
+			System.out.println(vehicle.getName() + " - " + (int) vehicle.score + " - " + 
+											   vehicle.getRating() + " - " + vehicle.scoreAddRating);
 		}
 		return;
 	}

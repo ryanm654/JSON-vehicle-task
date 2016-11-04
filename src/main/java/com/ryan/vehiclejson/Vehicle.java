@@ -18,20 +18,42 @@ import java.util.HashMap;
 
 class Vehicle {
 	// From JSON file
-	public String sipp;
-	public String name;
+	private String sipp;
+	private String name;
 	public double price;
 	public String supplier;
 	public double rating;
 
+	/* Calculated from SIPP */
 	public transient String carType;
 	public transient String doorType;
 	public transient String transmission;
 	public transient String fuel;
 	public transient String air;
 
+	/* Calculated from SIPP and Rating */
 	public transient double score = 0;
 	public transient double scoreAddRating;
+
+
+	/* Getters */
+	public String getSipp() { return this.sipp; }
+	public String getName() { return this.name; }
+	public double getPrice() { return this.price; }
+	public String getSupplier() { return this.supplier; }
+	public double getRating() { return this.rating; }
+	public String getCarType() { return this.carType; }
+	public String getDoorType() { return this.doorType; }
+	public String getTransmission() { return this.transmission; }
+	public String getFuel() { return this.fuel; }
+	public String getAir() { return this.air; }
+	
+	/* Setters */
+	public void setSipp(String newSIPP) { this.sipp = newSIPP; return; }
+	public void setName(String newName) { this.name = newName; return; }
+	public void setPrice(double newPrice) { this.price = newPrice; return; }
+	public void setSupplier(String newSupp) { this.supplier = newSupp; return; }
+	public void setRating(double newRating) { this.rating = newRating; return; }
 
 	public void calculateSIPP() {
 		/* Define the hashmaps for the SIPP comparison procedure */
