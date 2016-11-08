@@ -2,7 +2,7 @@
  *
  * Author: Ryan Malone
  *
- * This class is for implementing all of the exercises 
+ * This class is for implementing all of the exercises
  * that I needed to fulfill for the coding task and
  * will also be used to provide the methods
  * that a REST API will call
@@ -51,6 +51,7 @@ class VehicleJSONHandler {
 			return;
 		}
 		catch (IOException e) {
+			System.out.println("File has not been found, please make sure you are running from the base directory and have pulled vehicles.json\n\n");
 			e.printStackTrace();
 		}
 	}
@@ -95,7 +96,7 @@ class VehicleJSONHandler {
 	 * descending order */
 	public void printHighestRated() {
 		ArrayList<Vehicle> highestRatedList = new ArrayList<Vehicle>();
-		HashMap<String, Vehicle> currentHighestRated 
+		HashMap<String, Vehicle> currentHighestRated
 															= new HashMap<String, Vehicle>();
 
 		/* Loop through each vehicle, adding the highest rated supplier of each
@@ -103,7 +104,7 @@ class VehicleJSONHandler {
 		   with other vehicles of the same type */
 		for (Vehicle vehicle : vehicleList) {
 			Vehicle currentBest = currentHighestRated.get(vehicle.getCarType());
-			
+
 			if (currentBest == null) {
 				// Add new vehicle if one does not currently exist
 				currentHighestRated.put(vehicle.getCarType(), vehicle);
@@ -119,7 +120,7 @@ class VehicleJSONHandler {
 			}
 		}
 
-		/* Once this process is complete we must sort the new array list by 
+		/* Once this process is complete we must sort the new array list by
 		   rating, descending order */
 		Collections.sort(highestRatedList, new Comparator<Vehicle>() {
 			@Override
@@ -130,7 +131,7 @@ class VehicleJSONHandler {
 
 		/* Finally, print them out */
 		for (Vehicle vehicle : highestRatedList) {
-			System.out.println(vehicle.getName() + " - " + vehicle.getCarType() + " - " + 
+			System.out.println(vehicle.getName() + " - " + vehicle.getCarType() + " - " +
 												 vehicle.getSupplier() + " - " + vehicle.getRating());
 		}
 
@@ -157,7 +158,7 @@ class VehicleJSONHandler {
 		});
 
 		for (Vehicle vehicle : sortedList) {
-			System.out.println(vehicle.getName() + " - " + (int) vehicle.score + " - " + 
+			System.out.println(vehicle.getName() + " - " + (int) vehicle.score + " - " +
 											   vehicle.getRating() + " - " + vehicle.scoreAddRating);
 		}
 		return;

@@ -13,7 +13,7 @@ package com.ryan.vehiclejson;
 public class App  {
 	public static void main(String[] args) {
 		// Initialise JSON task handler
-		VehicleJSONHandler handler = new VehicleJSONHandler(args[0]);
+		VehicleJSONHandler handler = new VehicleJSONHandler("vehicles.json");
 
 		System.out.println("-----------------\nEXERCISE 1\n-----------------");
 		handler.printAscending();
